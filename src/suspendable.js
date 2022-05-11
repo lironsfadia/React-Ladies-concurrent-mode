@@ -1,23 +1,26 @@
 export function suspendable(promise) {
-  let status = 'pending';
+  // know to work with rge suspense
+  let status = "pending";
   let result;
 
   let suspender = promise.then(
-    response => {
-      status = 'success';
+    (response) => {
+      status = "success";
       result = response;
     },
-    error => {
-      status = 'error';
+    (error) => {
+      status = "error";
       result = error;
     }
-  )
+  );
 
   return {
     read() {
-      if( status === 'pending') throw promise;
-      if( status === 'error') throw result;
-      if( status === 'success') return result;
-    }
-  }
+      if (status === "pending") throw promise;
+      if (status === "error") throw result;
+      if (status === "success") return result;
+    },
+  };
 }
+
+// like promise all
